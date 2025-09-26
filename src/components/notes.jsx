@@ -11,7 +11,8 @@ export default function Notes() {
   const [error, setError] = useState(null);
   const [tenantPlan, setTenantPlan] = useState("FREE"); // assume FREE initially
   const [slug, setTenantSlug] = useState("")
-  const role = getUserIdentity()
+  const [role, setUserRole] = useState("")
+
   console.log(role, "the user identity is")
   const apiUrl = import.meta.env.VITE_API_URL;
   const navigate = useNavigate();
@@ -40,7 +41,7 @@ export default function Notes() {
       setNotes(data.data || []);
       if (data.data[0].tenantId.plan) setTenantPlan(data.data[0].tenantId.plan);
       if (data.data[0].tenantId.slug) setTenantSlug(data.data[0].tenantId.slug)
-
+      setUserRole(getUserIdentity())
     } catch (err) {
       if (err) {
         setError("Failed to load notes");
@@ -147,7 +148,7 @@ export default function Notes() {
           Free plan limit reached. {role == 'USER' ? <h1>you need to be admin to upgrade plan to pro</h1> : <button onClick={handleUpgradePlan} className="underline text-blue-600 hover:text-green-600 transition-colors duration-300">Upgrade to Pro</button>}
         </div>
       )}
-      {tenantPlan === "PRO" ? <h1 className="text-green-500 text-2xl"> Congratualtion now you can add Unlimited Notes</h1> : null}
+      {tenantPlan === "PRO" ? <h1 className="text-green-500 text-2xl"> You have a Pro version</h1> : null}
       {loading ? <p>Loading notes...</p> :
         <ul className="space-y-2">
           {notes.map(note => (

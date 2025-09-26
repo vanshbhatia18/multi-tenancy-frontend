@@ -8,6 +8,7 @@ import PrivateRoute from './components/PrivateRoute'
 import Note from "./components/notes"
 import { Route, Routes } from "react-router-dom";
 import SingleNote from './components/SingleNote'
+import { Navigate } from 'react-router-dom'
 function App() {
   const [count, setCount] = useState(0)
   const [user, setUser] = useState(null);
@@ -17,27 +18,27 @@ function App() {
     <div className="flex flex-col overflow-hidden bg-white ">
 
       <Routes>
-        <Route>
-          <Route path="register" element={<Register />} />
-          <Route
-            path="/app"
-            element={
-              <PrivateRoute>
-                <Note />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/getnote/:id"
-            element={
-              <PrivateRoute>
-                <SingleNote />
-              </PrivateRoute>
-            }
-          />
-          <Route path='/login' element={<Login />}></Route>
-        </Route>
+        <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<Login />} />
+        <Route
+          path="/app"
+          element={
+            <PrivateRoute>
+              <Note />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/getnote/:id"
+          element={
+            <PrivateRoute>
+              <SingleNote />
+            </PrivateRoute>
+          }
+        />
+        <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
+
     </div>
   )
 }
